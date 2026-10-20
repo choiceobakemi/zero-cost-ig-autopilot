@@ -1,0 +1,21 @@
+# Copy into your postiz-app folder (next to docker-compose.yaml). docker-compose picks it up automatically.
+services:
+  # Temporal fires the scheduled posts; upstream gives it no restart policy,
+  # so after a reboot it stays down and scheduled posts silently never go out.
+  temporal:
+    restart: always
+  temporal-postgresql:
+    restart: always
+  temporal-elasticsearch:
+    restart: always
+
+  # Debug-only containers: not started by default (saves RAM).
+  # Start them when needed with: docker-compose --profile debug up -d
+  spotlight:
+    profiles: ["debug"]
+  temporal-admin-tools:
+    profiles: ["debug"]
+  temporal-ui:
+    profiles: ["debug"]
+
+  # scripts/patch-linkedin-scopes.sh adds a `postiz: volumes:` block here.
